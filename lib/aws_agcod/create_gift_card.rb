@@ -2,7 +2,9 @@ require "aws_agcod/request"
 
 module AwsAgcod
   class CreateGiftCard
-    delegate :success?, :error_message, to: :@response
+    extend Forwardable
+
+    def_delegators :@response, :success?, :error_message
 
     def initialize(request_id, amount)
       @response = Request.new("CreateGiftCard", request_id,
