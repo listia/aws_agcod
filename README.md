@@ -29,8 +29,8 @@ AwsAgcod.configure do |config|
   config.access_key = "YOUR_ACCESS_KEY"
   config.secret_key = "YOUR_SECRET_KEY"
   config.partner_id = "PARTNER_ID"
-  config.uri = "https://agcod-v2-gamma.amazon.com" # default
-  config.partner_id = "us-east-1"
+  config.uri        = "https://agcod-v2-gamma.amazon.com" # default, sandbox endpoint
+  config.partner_id = "us-east-1" # default
 end
 ```
 
@@ -42,7 +42,7 @@ amount = 10 # USD
 
 request = AwsAgcod::CreateGiftCard.new(request_id, amount)
 
-# When succeed:
+# When succeed
 if request.success?
   request.claim_code # => code for the gift card
   request.gc_id # => gift card id
@@ -61,7 +61,7 @@ gc_id = "test_gc_id"
 
 request = AwsAgcod::CancelGiftCard.new(request_id, gc_id)
 
-# When failed:
+# When failed
 unless request.success?
   request.error_message # => Error response from AGCOD service
 end
@@ -79,7 +79,7 @@ show_no_ops = false # Wehther to show activities with no operation or not
 
 request = AwsAgcod::GiftCardActivityList.new(request_id, start_time, end_time, page, per_page, show_no_ops)
 
-# When succeed:
+# When succeed
 if request.success?
   request.results.each do |activity|
     activity.status # => SUCCESS, FAILURE, RESEND
