@@ -12,9 +12,9 @@ module AwsAgcod
     DEFAULT_REGION = "us-east-1"
 
     def initialize(credentials)
-      @access_key = credentials["access_key"]
-      @secret_key = credentials["secret_key"]
-      @region = credentials["region"] || DEFAULT_REGION
+      @access_key = credentials.access_key
+      @secret_key = credentials.secret_key
+      @region = credentials.region || DEFAULT_REGION
     end
 
     def sign(uri, headers, body = "")

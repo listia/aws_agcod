@@ -31,21 +31,17 @@ module AwsAgcod
         "date" => time.to_s
       }
 
-      Signature.new(config).sign(uri, headers, body)
-    end
-
-    def config
-      @config ||= YAML.load_file(AwsAgcod.config_file)[AwsAgcod.env]
+      Signature.new(AwsAgcod.config).sign(uri, headers, body)
     end
 
     def uri
-      @uri ||= URI("#{config["uri"]}/#{@action}")
+      @uri ||= URI("#{AwsAgcod.config.uri}/#{@action}")
     end
 
     def body
       @body ||= @params.merge(
-        "partnerId" => config["partner_id"],
-        "creationRequestId" => "#{config["partner_id"]}#{@request_id}"
+        "partnerId" => AwsAgcod.config.partner_id,
+        "creationRequestId" => "#{AwsAgcod.config.partner_id}#{@request_id}"
       ).to_json
     end
   end

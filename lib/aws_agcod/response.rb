@@ -11,7 +11,13 @@ module AwsAgcod
       # SUCCESS -- Operation succeeded
       # FAILURE -- Operation failed
       # RESEND -- A temporary/recoverable system failure that can be resolved by the partner retrying the request
-      @status = payload["status"] ? payload["status"] : payload["agcodResponse"]["status"]
+      @status = if payload["status"]
+        payload["status"]
+      elsif payload["agcodResponse"]
+        payload["agcodResponse"]["status"]
+      else
+        "FAILURE"
+      end
     end
 
     def success?
