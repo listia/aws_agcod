@@ -9,7 +9,6 @@ require "pathname"
 module AwsAgcod
   class Signature
     SERVICE = "AGCODService"
-    DEFAULT_REGION = "us-east-1"
 
     def initialize(credentials)
       @access_key = credentials.access_key

@@ -4,7 +4,8 @@ module AwsAgcod
   class GiftCardActivityListError < StandardError; end
 
   class GiftCardActivity
-    attr_reader :status, :created_at, :type, :card_number, :amount
+    attr_reader :status, :created_at, :type, :card_number, :amount, :error_code,
+                :gc_id, :partner_id, :request_id
 
     def initialize(payload)
       @payload = payload
@@ -32,10 +33,11 @@ module AwsAgcod
 
     def_delegators :@response, :success?, :error_message
 
-    def initialize(request_id, start_time, end_time, page = 1, per_page = 200, show_no_ops = false)
+    def initialize(request_id, start_time, end_time, page = 1, per_page = 100, show_no_ops = false)
       raise GiftCardActivityError, "Only #{LIMIT} records allowed per request." if per_page > LIMIT
 
-      @response = Request.new("GetGiftCardActivityPage", request_id,
+      @response = Request.new("GetGiftCardActivityPage",
+        "requestId" => request_id,
         "utcStartDate" => start_time.strftime(TIME_FORMAT),
         "utcEndDate" => end_time.strftime(TIME_FORMAT),
         "pageIndex" => (page - 1) * per_page,

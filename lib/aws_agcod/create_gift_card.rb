@@ -7,7 +7,8 @@ module AwsAgcod
     def_delegators :@response, :success?, :error_message
 
     def initialize(request_id, amount)
-      @response = Request.new("CreateGiftCard", request_id,
+      @response = Request.new("CreateGiftCard",
+        "creationRequestId" => "#{AwsAgcod.config.partner_id}#{request_id}",
         "value" => {
           "currencyCode" => "USD",
           "amount" => amount

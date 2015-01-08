@@ -9,6 +9,8 @@ module AwsAgcod
     @config = Config.new
 
     yield @config
+
+    nil
   end
 
   def self.config

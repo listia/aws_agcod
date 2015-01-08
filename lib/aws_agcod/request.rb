@@ -9,9 +9,8 @@ module AwsAgcod
 
     attr_reader :response
 
-    def initialize(action, request_id, params)
+    def initialize(action, params)
       @action = action
-      @request_id = request_id
       @params = params
 
       @response = Response.new(HTTParty.post(uri, body: body, headers: signed_headers, timeout: 30).body)
@@ -40,8 +39,7 @@ module AwsAgcod
 
     def body
       @body ||= @params.merge(
-        "partnerId" => AwsAgcod.config.partner_id,
-        "creationRequestId" => "#{AwsAgcod.config.partner_id}#{@request_id}"
+        "partnerId" => AwsAgcod.config.partner_id
       ).to_json
     end
   end
