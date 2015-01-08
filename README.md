@@ -38,9 +38,10 @@ end
 
 ```ruby
 request_id = "test"
-amount = 10 # USD
+amount = 10
+currency = "USD" # default to USD, available types are: USD, EUR, JPY, CNY, CAD
 
-request = AwsAgcod::CreateGiftCard.new(request_id, amount)
+request = AwsAgcod::CreateGiftCard.new(request_id, amount, currency)
 
 # When succeed
 if request.success?
