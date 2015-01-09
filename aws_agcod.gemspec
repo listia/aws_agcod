@@ -5,7 +5,7 @@ require 'aws_agcod/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "aws_agcod"
-  spec.version       = AwsAgcod::VERSION
+  spec.version       = AGCOD::VERSION
   spec.authors       = ["Xenor Chang"]
   spec.email         = ["xenor@listia.com"]
   spec.summary       = %q{AWS AGCOD API v2 endpoints implementation}

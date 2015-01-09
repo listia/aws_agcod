@@ -1,6 +1,6 @@
 require "aws_agcod/request"
 
-module AwsAgcod
+module AGCOD
   class CreateGiftCardError < StandardError; end
 
   class CreateGiftCard
@@ -11,12 +11,12 @@ module AwsAgcod
     def_delegators :@response, :success?, :error_message
 
     def initialize(request_id, amount, currency = "USD")
-      if CURRENCIES.include?(currency.to_s)
-        raise CreateGiftCardError, "Currency #{currency} not supported, support types are #{CURRENCIES.join(", ")}"
+      unless CURRENCIES.include?(currency.to_s)
+        raise CreateGiftCardError, "Currency #{currency} not supported, available types are #{CURRENCIES.join(", ")}"
       end
 
       @response = Request.new("CreateGiftCard",
-        "creationRequestId" => "#{AwsAgcod.config.partner_id}#{request_id}",
+        "creationRequestId" => "#{AGCOD.config.partner_id}#{request_id}",
         "value" => {
           "currencyCode" => currency,
           "amount" => amount

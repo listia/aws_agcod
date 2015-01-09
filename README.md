@@ -1,4 +1,4 @@
-# AwsAgcod
+# AGCOD
 
 Amazon Gift Code On Demand (AGCOD) API v2 implementation for distribute Amazon gift cards (gift codes) instantly in any denomination.
 
@@ -25,7 +25,7 @@ Or install it yourself as:
 ```ruby
 require "aws_agcod"
 
-AwsAgcod.configure do |config|
+AGCOD.configure do |config|
   config.access_key = "YOUR_ACCESS_KEY"
   config.secret_key = "YOUR_SECRET_KEY"
   config.partner_id = "PARTNER_ID"
@@ -41,7 +41,7 @@ request_id = "test"
 amount = 10
 currency = "USD" # default to USD, available types are: USD, EUR, JPY, CNY, CAD
 
-request = AwsAgcod::CreateGiftCard.new(request_id, amount, currency)
+request = AGCOD::CreateGiftCard.new(request_id, amount, currency)
 
 # When succeed
 if request.success?
@@ -60,7 +60,7 @@ end
 request_id = "test"
 gc_id = "test_gc_id"
 
-request = AwsAgcod::CancelGiftCard.new(request_id, gc_id)
+request = AGCOD::CancelGiftCard.new(request_id, gc_id)
 
 # When failed
 unless request.success?
@@ -78,7 +78,7 @@ page = 1
 per_page = 100
 show_no_ops = false # Wehther to show activities with no operation or not
 
-request = AwsAgcod::GiftCardActivityList.new(request_id, start_time, end_time, page, per_page, show_no_ops)
+request = AGCOD::GiftCardActivityList.new(request_id, start_time, end_time, page, per_page, show_no_ops)
 
 # When succeed
 if request.success?

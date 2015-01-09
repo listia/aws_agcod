@@ -3,7 +3,7 @@ require "aws_agcod/response"
 require "httparty"
 require "yaml"
 
-module AwsAgcod
+module AGCOD
   class Request
     TIME_FORMAT = "%Y%m%dT%H%M%SZ"
 
@@ -13,7 +13,7 @@ module AwsAgcod
       @action = action
       @params = params
 
-      @response = Response.new(HTTParty.post(uri, body: body, headers: signed_headers, timeout: 30).body)
+      @response = Response.new(HTTParty.post(uri, body: body, headers: signed_headers, timeout: AGCOD.config.timeout).body)
     end
 
     private
@@ -30,16 +30,16 @@ module AwsAgcod
         "date" => time.to_s
       }
 
-      Signature.new(AwsAgcod.config).sign(uri, headers, body)
+      Signature.new(AGCOD.config).sign(uri, headers, body)
     end
 
     def uri
-      @uri ||= URI("#{AwsAgcod.config.uri}/#{@action}")
+      @uri ||= URI("#{AGCOD.config.uri}/#{@action}")
     end
 
     def body
       @body ||= @params.merge(
-        "partnerId" => AwsAgcod.config.partner_id
+        "partnerId" => AGCOD.config.partner_id
       ).to_json
     end
   end

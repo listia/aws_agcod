@@ -1,6 +1,6 @@
 require "aws_agcod/request"
 
-module AwsAgcod
+module AGCOD
   class CancelGiftCard
     extend Forwardable
 
@@ -8,7 +8,7 @@ module AwsAgcod
 
     def initialize(request_id, gc_id)
       @response = Request.new("CancelGiftCard",
-        "creationRequestId" => "#{AwsAgcod.config.partner_id}#{request_id}",
+        "creationRequestId" => "#{AGCOD.config.partner_id}#{request_id}",
         "gcId" => gc_id
       ).response
     end

@@ -1,6 +1,6 @@
 require "aws_agcod/request"
 
-module AwsAgcod
+module AGCOD
   class GiftCardActivityListError < StandardError; end
 
   class GiftCardActivity
@@ -34,7 +34,7 @@ module AwsAgcod
     def_delegators :@response, :success?, :error_message
 
     def initialize(request_id, start_time, end_time, page = 1, per_page = 100, show_no_ops = false)
-      raise GiftCardActivityError, "Only #{LIMIT} records allowed per request." if per_page > LIMIT
+      raise GiftCardActivityListError, "Only #{LIMIT} records allowed per request." if per_page > LIMIT
 
       @response = Request.new("GetGiftCardActivityPage",
         "requestId" => request_id,
