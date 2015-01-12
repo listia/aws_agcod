@@ -52,7 +52,7 @@ describe AGCOD::CreateGiftCard do
     let(:request) { AGCOD::CreateGiftCard.new(request_id, amount, currency) }
 
     before do
-      allow(AGCOD::Request).to receive(:new) { double(response: response) }
+      allow(AGCOD::Request).to receive(:new) { double(:response => response) }
       allow(response).to receive(:payload) { payload }
     end
   end

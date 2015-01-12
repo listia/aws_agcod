@@ -61,7 +61,7 @@ describe AGCOD::GiftCardActivityList do
     before do
       allow(start_time).to receive(:strftime)
       allow(end_time).to receive(:strftime)
-      allow(AGCOD::Request).to receive(:new) { double(response: response) }
+      allow(AGCOD::Request).to receive(:new) { double(:response => response) }
       allow(response).to receive(:payload) { payload }
     end
 

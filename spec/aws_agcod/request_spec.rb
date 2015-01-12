@@ -9,7 +9,9 @@ describe AGCOD::Request do
   let(:base_uri) { "https://example.com" }
   let(:partner_id) { "BAR" }
   let(:timeout) { 10 }
-  let(:config) { double(uri: base_uri, partner_id: partner_id, timeout: timeout) }
+  let(:config) { double(:uri => base_uri, :partner_id => partner_id, :timeout => timeout) }
+  let(:connection) { double("Connection") }
+  let(:request_options) { { :request => { :timeout => config.timeout } } }
 
   context "#new" do
     before do
@@ -26,19 +28,21 @@ describe AGCOD::Request do
         expect(JSON.parse(body)["partnerId"]).to eq(partner_id)
       end.and_return(signed_headers)
 
-      expect(HTTParty).to receive(:post) do |uri, options|
-        expect(uri).to eq(URI("#{base_uri}/#{action}"))
-        expect(JSON.parse(options[:body])["partnerId"]).to eq(partner_id)
-        expect(options[:headers]).to eq(signed_headers)
-        expect(options[:timeout]).to eq(timeout)
-      end.and_return(double(body: params.to_json))
+      expect(Faraday).to receive(:new).with(base_uri, request_options) { connection }
+
+      expect(connection).to receive(:post) do |path, body, headers|
+        expect(path).to eq(URI("#{base_uri}/#{action}").path)
+        expect(JSON.parse(body)["partnerId"]).to eq(partner_id)
+        expect(headers).to eq(signed_headers)
+      end.and_return(double(:body => params.to_json))
 
       AGCOD::Request.new(action, params)
     end
 
     it "sets response" do
       expect(signature).to receive(:sign) { signed_headers }
-      expect(HTTParty).to receive(:post) { (double(body: params.to_json)) }
+      expect(connection).to receive(:post) { (double(:body => params.to_json)) }
+      expect(Faraday).to receive(:new).with(base_uri, request_options) { connection }
 
       response = AGCOD::Request.new(action, params).response
 

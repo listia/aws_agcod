@@ -1,11 +1,11 @@
 require "aws_agcod/signature"
 require "aws_agcod/response"
-require "httparty"
-require "yaml"
+require "faraday"
 
 module AGCOD
   class Request
-    TIME_FORMAT = "%Y%m%dT%H%M%SZ"
+    AMAZON_TIME_FORMAT = "%Y%m%dT%H%M%SZ"
+    DATE_TIME_FORMAT   = "%Y-%m-%d %H:%M:%S %Z" # Ruby 1.8 has a different default time format
 
     attr_reader :response
 
@@ -13,21 +13,29 @@ module AGCOD
       @action = action
       @params = params
 
-      @response = Response.new(HTTParty.post(uri, body: body, headers: signed_headers, timeout: AGCOD.config.timeout).body)
+      @response = Response.new(raw_response.body)
     end
 
     private
+
+    def connection
+      @connection ||= Faraday.new(AGCOD.config.uri, :request => { :timeout => AGCOD.config.timeout })
+    end
+
+    def raw_response
+      connection.post uri.path, body, signed_headers
+    end
 
     def signed_headers
       time = Time.now.utc
 
       headers = {
         "content-type" => "application/json",
-        "x-amz-date" => time.strftime(TIME_FORMAT),
+        "x-amz-date" => time.strftime(AMAZON_TIME_FORMAT),
         "accept" => "application/json",
         "host" => uri.host,
         "x-amz-target" => "com.amazonaws.agcod.AGCODService.#{@action}",
-        "date" => time.to_s
+        "date" => time.strftime(DATE_TIME_FORMAT)
       }
 
       Signature.new(AGCOD.config).sign(uri, headers, body)

@@ -2,7 +2,7 @@ require "spec_helper"
 require "aws_agcod/response"
 
 describe AGCOD::Response do
-  let(:payload) { { foo: "bar" }.to_json }
+  let(:payload) { { :foo => "bar" }.to_json }
 
   context "#new" do
     it "sets payload and status" do
@@ -20,7 +20,7 @@ describe AGCOD::Response do
 
     context "when has status in payload" do
       let(:status) { "foo" }
-      let(:payload) { { status: status }.to_json }
+      let(:payload) { { :status => status }.to_json }
 
       it "sets status as payload's status" do
         expect(AGCOD::Response.new(payload).status).to eq(status)
@@ -29,7 +29,7 @@ describe AGCOD::Response do
 
     context "when has agcodResponse in payload" do
       let(:status) { "foo" }
-      let(:payload) { { agcodResponse: { status: status } }.to_json }
+      let(:payload) { { :agcodResponse => { :status => status } }.to_json }
 
       it "sets status as agcodResponse's status" do
         expect(AGCOD::Response.new(payload).status).to eq(status)
@@ -39,7 +39,7 @@ describe AGCOD::Response do
 
   context "success?" do
     context "when status is SUCCESS" do
-      let(:payload) { { status: "SUCCESS" }.to_json }
+      let(:payload) { { :status => "SUCCESS" }.to_json }
 
       it "returns true" do
         expect(AGCOD::Response.new(payload).success?).to be_truthy
@@ -57,7 +57,7 @@ describe AGCOD::Response do
     let(:error_code) { "foo" }
     let(:error_type) { "bar" }
     let(:error_message) { "baz" }
-    let(:payload) { { errorCode: error_code, errorType: error_type, message: error_message }.to_json }
+    let(:payload) { { :errorCode => error_code, :errorType => error_type, :message => error_message }.to_json }
 
     it "composes error message by error code, type, and message from payload" do
       expect(AGCOD::Response.new(payload).error_message).to eq("#{error_code} #{error_type} - #{error_message}")
