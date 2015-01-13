@@ -13,7 +13,7 @@ module AGCOD
     def initialize(credentials)
       @access_key = credentials.access_key
       @secret_key = credentials.secret_key
-      @region = credentials.region || DEFAULT_REGION
+      @region = credentials.region
     end
 
     def sign(uri, headers, body = "")

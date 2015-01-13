@@ -30,7 +30,8 @@ AGCOD.configure do |config|
   config.secret_key = "YOUR_SECRET_KEY"
   config.partner_id = "PARTNER_ID"
   config.uri        = "https://agcod-v2-gamma.amazon.com" # default, sandbox endpoint
-  config.partner_id = "us-east-1" # default
+  config.region     = "us-east-1" # default
+  config.timeout    = 30 # default
 end
 ```
 
