@@ -85,11 +85,11 @@ module AGCOD
     # is a mechanism for calculating a message authentication code
     # involving a hash function in combination with a secret key
     def hmac(key, value)
-      OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new("sha256"), key, value)
+      OpenSSL::HMAC.digest(OpenSSL::Digest.new("sha256"), key, value)
     end
 
     def hexhmac(key, value)
-      OpenSSL::HMAC.hexdigest(OpenSSL::Digest::Digest.new("sha256"), key, value)
+      OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha256"), key, value)
     end
   end
 end
