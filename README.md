@@ -26,12 +26,19 @@ Or install it yourself as:
 require "aws_agcod"
 
 AGCOD.configure do |config|
-  config.access_key = "YOUR_ACCESS_KEY"
-  config.secret_key = "YOUR_SECRET_KEY"
-  config.partner_id = "PARTNER_ID"
-  config.uri        = "https://agcod-v2-gamma.amazon.com" # default, sandbox endpoint
-  config.region = "us-east-1" # default
-  config.timeout = 30 # default
+  config.access_key = "YOUR ACCESS KEY"
+  config.secret_key = "YOUR SECRET KEY"
+  config.partner_id = "PARTNER ID"
+
+  # The `production` config is important as it determines which endpoint
+  # you're hitting.
+  config.production = true  # This defaults to false.
+
+  # Optionally, you can customize the URI completely.
+  config.uri = "https://my-custom-agcod-endpoint.com"
+
+  config.region  = "us-east-1" # default
+  config.timeout = 30          # default
 end
 ```
 
