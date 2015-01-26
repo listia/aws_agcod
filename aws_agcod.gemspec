@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.summary       = %q{AWS AGCOD API v2 endpoints implementation}
   spec.description   = %q{Amazon Gift Code On Demand (AGCOD) API v2 implementation for
                           distribute Amazon gift cards (gift codes) instantly in any denomination}
-  spec.homepage      = "https://github.com/listia/aws-agcod"
+  spec.homepage      = "https://github.com/listia/aws_agcod"
   spec.license       = "MIT"
 
   spec.files         = Dir["{lib,spec}/**/*"].select { |f| File.file?(f) } +
