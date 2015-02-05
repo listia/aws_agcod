@@ -84,11 +84,10 @@ start_time = Time.now - 86400
 end_time = Time.now
 page = 1
 per_page = 100
-show_no_ops = false # Wehther to show activities with no operation or not
+show_no_ops = false # Whether or not to show activities with no operation
 
 request = AGCOD::GiftCardActivityList.new(request_id, start_time, end_time, page, per_page, show_no_ops)
 
-# When succeed
 if request.success?
   request.results.each do |activity|
     activity.status # => SUCCESS, FAILURE, RESEND
@@ -102,7 +101,6 @@ if request.success?
     activity.request_id
   end
 else
-# When failed
   request.error_message # => Error response from AGCOD service
 end
 ```
