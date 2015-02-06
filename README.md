@@ -1,5 +1,8 @@
 # AGCOD
 
+[![Build Status](https://travis-ci.org/listia/aws_agcod.svg?branch=master)](https://travis-ci.org/listia/aws_agcod)
+[![Gem Version](https://badge.fury.io/rb/aws_agcod.svg)](http://badge.fury.io/rb/aws_agcod)
+
 Amazon Gift Code On Demand (AGCOD) API v2 implementation for distribute Amazon gift cards (gift codes) instantly in any denomination.
 
 ## Installation

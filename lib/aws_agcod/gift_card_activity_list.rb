@@ -47,7 +47,7 @@ module AGCOD
     end
 
     def results
-      @response["cardActivityList"].map { |payload| GiftCardActivity.new(payload) }
+      @response.payload["cardActivityList"].map { |payload| GiftCardActivity.new(payload) }
     end
   end
 end

@@ -55,7 +55,7 @@ describe AGCOD::GiftCardActivityList do
   end
 
   context "#results" do
-    let(:payload) { { "cardActivityList" => [double * 3] } }
+    let(:payload) { { "cardActivityList" => [spy] } }
     let(:request) { AGCOD::GiftCardActivityList.new(request_id, start_time, end_time, page, per_page, show_no_ops) }
 
     before do
@@ -67,7 +67,7 @@ describe AGCOD::GiftCardActivityList do
 
     it "returns GiftCardActivity instances" do
       request.results.each do |item|
-        expec(item).to be_a(AGCOD::GiftCardActivity)
+        expect(item).to be_a(AGCOD::GiftCardActivity)
       end
     end
   end
