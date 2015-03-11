@@ -16,7 +16,7 @@ module AGCOD
       end
 
       @response = Request.new("CreateGiftCard",
-        "creationRequestId" => "#{AGCOD.config.partner_id}#{request_id}",
+        "creationRequestId" => request_id,
         "value" => {
           "currencyCode" => currency,
           "amount" => amount

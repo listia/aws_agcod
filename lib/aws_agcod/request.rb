@@ -11,7 +11,7 @@ module AGCOD
 
     def initialize(action, params)
       @action = action
-      @params = params
+      @params = sanitized_params(params)
 
       @response = Response.new(HTTParty.post(uri, body: body, headers: signed_headers, timeout: AGCOD.config.timeout).body)
     end
@@ -41,6 +41,20 @@ module AGCOD
       @body ||= @params.merge(
         "partnerId" => AGCOD.config.partner_id
       ).to_json
+    end
+
+    def sanitized_params(params)
+      # Prefix partner_id when it's not given as part of request_id for creationRequestId
+      if params["creationRequestId"] && !(params["creationRequestId"] =~ /#{AGCOD.config.partner_id}/)
+        params["creationRequestId"] = "#{AGCOD.config.partner_id}#{params["creationRequestId"]}"
+      end
+
+      # Remove partner_id when it's prefixed in requestId
+      if params["requestId"] && !!(params["requestId"] =~ /^#{AGCOD.config.partner_id}/)
+        params["requestId"].sub!(/^#{AGCOD.config.partner_id}/, "")
+      end
+
+      params
     end
   end
 end

@@ -8,7 +8,7 @@ module AGCOD
 
     def initialize(request_id, gc_id)
       @response = Request.new("CancelGiftCard",
-        "creationRequestId" => "#{AGCOD.config.partner_id}#{request_id}",
+        "creationRequestId" => request_id,
         "gcId" => gc_id
       ).response
     end
