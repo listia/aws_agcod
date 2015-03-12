@@ -29,7 +29,7 @@ module AGCOD
     end
 
     def expiration_date
-      Time.parse @response.payload["gcExpirationDate"]
+      @expiration_date ||= Time.parse @response.payload["gcExpirationDate"]
     end
 
     def gc_id
