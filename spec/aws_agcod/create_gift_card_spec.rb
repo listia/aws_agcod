@@ -46,9 +46,10 @@ describe AGCOD::CreateGiftCard do
 
   shared_context "request with response" do
     let(:claim_code) { "FOO" }
+    let(:expiration_date) { "Wed Mar 12 22:59:59 UTC 2025" }
     let(:gc_id) { "BAR" }
     let(:creation_request_id) { "BAZ" }
-    let(:payload) { {"gcClaimCode" => claim_code, "gcId" => gc_id, "creationRequestId" => creation_request_id} }
+    let(:payload) { {"gcClaimCode" => claim_code, "gcId" => gc_id, "creationRequestId" => creation_request_id, "gcExpirationDate" => expiration_date} }
     let(:request) { AGCOD::CreateGiftCard.new(request_id, amount, currency) }
 
     before do
@@ -62,6 +63,14 @@ describe AGCOD::CreateGiftCard do
 
     it "returns claim_code" do
       expect(request.claim_code).to eq(claim_code)
+    end
+  end
+
+  context "#expiration_date" do
+    include_context "request with response"
+
+    it "returns expiration_date" do
+      expect(request.expiration_date).to eq(Time.parse expiration_date)
     end
   end
 
