@@ -19,7 +19,7 @@ describe AGCOD::CreateGiftCard do
       it "makes create request" do
         expect(AGCOD::Request).to receive(:new) do |action, params|
           expect(action).to eq("CreateGiftCard")
-          expect(params["creationRequestId"]).to eq("#{partner_id}#{request_id}")
+          expect(params["creationRequestId"]).to eq(request_id)
           expect(params["value"]).to eq(
             "currencyCode" => currency,
             "amount" => amount

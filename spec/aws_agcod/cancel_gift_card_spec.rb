@@ -17,7 +17,7 @@ describe AGCOD::CancelGiftCard do
     it "makes cancel request" do
       expect(AGCOD::Request).to receive(:new) do |action, params|
         expect(action).to eq("CancelGiftCard")
-        expect(params["creationRequestId"]).to eq("#{partner_id}#{request_id}")
+        expect(params["creationRequestId"]).to eq(request_id)
         expect(params["gcId"]).to eq(gc_id)
       end.and_return(spy)
 
