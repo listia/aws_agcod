@@ -28,6 +28,10 @@ module AGCOD
       @response.payload["gcClaimCode"]
     end
 
+    def expiration_date
+      @expiration_date ||= Time.parse @response.payload["gcExpirationDate"]
+    end
+
     def gc_id
       @response.payload["gcId"]
     end
