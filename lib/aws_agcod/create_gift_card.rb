@@ -8,7 +8,7 @@ module AGCOD
 
     CURRENCIES = %w(USD EUR JPY CNY CAD)
 
-    def_delegators :@response, :success?, :error_message
+    def_delegators :@response, :status, :success?, :error_message
 
     def initialize(request_id, amount, currency = "USD")
       unless CURRENCIES.include?(currency.to_s)
