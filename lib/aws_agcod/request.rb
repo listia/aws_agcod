@@ -6,6 +6,7 @@ require "yaml"
 module AGCOD
   class Request
     TIME_FORMAT = "%Y%m%dT%H%M%SZ"
+    MOCK_REQUEST_IDS = %w(F0000 F2005)
 
     attr_reader :response
 
@@ -44,8 +45,8 @@ module AGCOD
     end
 
     def sanitized_params(params)
-      # Prefix partner_id when it's not given as part of request_id for creationRequestId
-      if params["creationRequestId"] && !(params["creationRequestId"] =~ /#{AGCOD.config.partner_id}/)
+      # Prefix partner_id when it's not given as part of request_id for creationRequestId and it's not a mock request_id
+      if params["creationRequestId"] && !(params["creationRequestId"] =~ /#{AGCOD.config.partner_id}/) && !(MOCK_REQUEST_IDS.member?(params["creationRequestId"]))
         params["creationRequestId"] = "#{AGCOD.config.partner_id}#{params["creationRequestId"]}"
       end
 
