@@ -4,6 +4,7 @@ require "aws_agcod/cancel_gift_card"
 describe AGCOD::CancelGiftCard do
   let(:partner_id) { "Testa" }
   let(:response) { spy }
+  let(:httpable) { HTTP }
 
   before do
     AGCOD.configure do |config|
@@ -16,13 +17,13 @@ describe AGCOD::CancelGiftCard do
     let(:gc_id) { "FOO" }
 
     it "makes cancel request" do
-      expect(AGCOD::Request).to receive(:new) do |action, params|
+      expect(AGCOD::Request).to receive(:new) do |_, action, params|
         expect(action).to eq("CancelGiftCard")
         expect(params["creationRequestId"]).to eq(request_id)
         expect(params["gcId"]).to eq(gc_id)
       end.and_return(response)
 
-      AGCOD::CancelGiftCard.new(request_id, gc_id)
+      AGCOD::CancelGiftCard.new(httpable, request_id, gc_id)
     end
   end
 
@@ -30,7 +31,7 @@ describe AGCOD::CancelGiftCard do
     let(:gc_id) { "BAR" }
     let(:creation_request_id) { "BAZ" }
     let(:status) { "SUCCESS" }
-    let(:request) { AGCOD::CancelGiftCard.new(creation_request_id, gc_id) }
+    let(:request) { AGCOD::CancelGiftCard.new(httpable, creation_request_id, gc_id) }
 
     before do
       allow(AGCOD::Request).to receive(:new) { double(response: response) }

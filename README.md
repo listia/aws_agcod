@@ -1,9 +1,9 @@
 # AGCOD
 
-[![Build Status](https://travis-ci.org/listia/aws_agcod.svg?branch=master)](https://travis-ci.org/listia/aws_agcod)
+[![Build Status](https://travis-ci.org/compwron/aws_agcod.svg?branch=master)](https://travis-ci.org/compwron/aws_agcod)
 [![Gem Version](https://badge.fury.io/rb/aws_agcod.svg)](http://badge.fury.io/rb/aws_agcod)
 
-Amazon Gift Code On Demand (AGCOD) API v2 implementation for distribute Amazon gift cards (gift codes) instantly in any denomination.
+Amazon Gift Code On Demand (AGCOD) API v2 implementation for distributing Amazon gift cards (gift codes) instantly in any denomination.
 
 ## Installation
 
@@ -51,8 +51,8 @@ end
 request_id = "test"
 amount = 10
 currency = "USD" # default to USD, available types are: USD, EUR, JPY, CNY, CAD
-
-request = AGCOD::CreateGiftCard.new(request_id, amount, currency)
+httpable = HTTP # or HTTParty- whatever library you're using that has .post
+request = AGCOD::CreateGiftCard.new(httpable, request_id, amount, currency)
 
 # When succeed
 if request.success?
@@ -70,8 +70,8 @@ end
 ```ruby
 request_id = "test"
 gc_id = "test_gc_id"
-
-request = AGCOD::CancelGiftCard.new(request_id, gc_id)
+httpable = HTTP # or HTTParty- whatever library you're using that has .post
+request = AGCOD::CancelGiftCard.new(httpable, request_id, gc_id)
 
 # When failed
 unless request.success?
@@ -88,8 +88,8 @@ end_time = Time.now
 page = 1
 per_page = 100
 show_no_ops = false # Whether or not to show activities with no operation
-
-request = AGCOD::GiftCardActivityList.new(request_id, start_time, end_time, page, per_page, show_no_ops)
+httpable = HTTP # or HTTParty- whatever library you're using that has .post
+request = AGCOD::GiftCardActivityList.new(httpable, request_id, start_time, end_time, page, per_page, show_no_ops)
 
 if request.success?
   request.results.each do |activity|

@@ -1,4 +1,5 @@
 require "pathname"
+require "http"
 
 ROOT_PATH = Pathname.new(__FILE__).join("../..").expand_path
 $LOAD_PATH.unshift(ROOT_PATH.join("lib"))

@@ -1,6 +1,6 @@
 require "aws_agcod/signature"
 require "aws_agcod/response"
-require "httparty"
+require "http"
 require "yaml"
 
 module AGCOD
@@ -9,11 +9,11 @@ module AGCOD
 
     attr_reader :response
 
-    def initialize(action, params)
+    def initialize(httpable, action, params) # httpable is anything that can have post called upon it; this allows passing in a proxy
       @action = action
       @params = sanitized_params(params)
 
-      @response = Response.new(HTTParty.post(uri, body: body, headers: signed_headers, timeout: AGCOD.config.timeout).body)
+      @response = Response.new(httpable.post(uri, body: body, headers: signed_headers, timeout: AGCOD.config.timeout).body)
     end
 
     private

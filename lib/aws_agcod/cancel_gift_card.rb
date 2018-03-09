@@ -6,8 +6,8 @@ module AGCOD
 
     def_delegators :@response, :status, :success?, :error_message
 
-    def initialize(request_id, gc_id)
-      @response = Request.new("CancelGiftCard",
+    def initialize(httpable, request_id, gc_id)
+      @response = Request.new(httpable,"CancelGiftCard",
         "creationRequestId" => request_id,
         "gcId" => gc_id
       ).response
