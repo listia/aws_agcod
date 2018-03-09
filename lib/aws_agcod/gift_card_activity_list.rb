@@ -33,10 +33,10 @@ module AGCOD
 
     def_delegators :@response, :success?, :error_message
 
-    def initialize(request_id, start_time, end_time, page = 1, per_page = 100, show_no_ops = false)
+    def initialize(httpable, request_id, start_time, end_time, page = 1, per_page = 100, show_no_ops = false)
       raise GiftCardActivityListError, "Only #{LIMIT} records allowed per request." if per_page > LIMIT
 
-      @response = Request.new("GetGiftCardActivityPage",
+      @response = Request.new(httpable,"GetGiftCardActivityPage",
         "requestId" => request_id,
         "utcStartDate" => start_time.strftime(TIME_FORMAT),
         "utcEndDate" => end_time.strftime(TIME_FORMAT),

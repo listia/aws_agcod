@@ -7,6 +7,7 @@ describe AGCOD::CreateGiftCard do
   let(:amount) { 10 }
   let(:currency) { AGCOD::CreateGiftCard::CURRENCIES.first }
   let(:response) { spy }
+  let(:httpable) { HTTP }
 
   before do
     AGCOD.configure do |config|
@@ -17,7 +18,8 @@ describe AGCOD::CreateGiftCard do
   context ".new" do
     context "when currency available" do
       it "makes create request" do
-        expect(AGCOD::Request).to receive(:new) do |action, params|
+        expect(AGCOD::Request).to receive(:new) do |httpable, action, params|
+          expect(httpable).to eq(HTTP)
           expect(action).to eq("CreateGiftCard")
           expect(params["creationRequestId"]).to eq(request_id)
           expect(params["value"]).to eq(
@@ -26,7 +28,7 @@ describe AGCOD::CreateGiftCard do
           )
         end.and_return(response)
 
-        AGCOD::CreateGiftCard.new(request_id, amount, currency)
+        AGCOD::CreateGiftCard.new(httpable, request_id, amount, currency)
       end
     end
 
@@ -35,7 +37,7 @@ describe AGCOD::CreateGiftCard do
 
       it "raises error" do
         expect {
-          AGCOD::CreateGiftCard.new(request_id, amount, currency)
+          AGCOD::CreateGiftCard.new(httpable, request_id, amount, currency)
         }.to raise_error(
           AGCOD::CreateGiftCardError,
           "Currency #{currency} not supported, available types are #{AGCOD::CreateGiftCard::CURRENCIES.join(", ")}"
@@ -51,7 +53,7 @@ describe AGCOD::CreateGiftCard do
     let(:creation_request_id) { "BAZ" }
     let(:status) { "SUCCESS" }
     let(:payload) { {"gcClaimCode" => claim_code, "gcId" => gc_id, "creationRequestId" => creation_request_id, "gcExpirationDate" => expiration_date} }
-    let(:request) { AGCOD::CreateGiftCard.new(request_id, amount, currency) }
+    let(:request) { AGCOD::CreateGiftCard.new(httpable, request_id, amount, currency) }
 
     before do
       allow(AGCOD::Request).to receive(:new) { double(response: response) }

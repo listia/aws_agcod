@@ -10,6 +10,7 @@ describe AGCOD::GiftCardActivityList do
   let(:per_page) { AGCOD::GiftCardActivityList::LIMIT }
   let(:show_no_ops) { true }
   let(:response) { spy }
+  let(:httpable) { HTTP }
 
   before do
     AGCOD.configure do |config|
@@ -27,7 +28,7 @@ describe AGCOD::GiftCardActivityList do
         AGCOD::GiftCardActivityList::TIME_FORMAT
       ).and_return(end_time)
 
-      expect(AGCOD::Request).to receive(:new) do |action, params|
+      expect(AGCOD::Request).to receive(:new) do |_, action, params|
         expect(action).to eq("GetGiftCardActivityPage")
         expect(params["requestId"]).to eq(request_id)
         expect(params["utcStartDate"]).to eq(start_time)
@@ -37,7 +38,7 @@ describe AGCOD::GiftCardActivityList do
         expect(params["showNoOps"]).to eq(show_no_ops)
       end.and_return(response)
 
-      AGCOD::GiftCardActivityList.new(request_id, start_time, end_time, page, per_page, show_no_ops)
+      AGCOD::GiftCardActivityList.new(httpable, request_id, start_time, end_time, page, per_page, show_no_ops)
     end
 
     context "when request per_page reaches limit" do
@@ -45,7 +46,7 @@ describe AGCOD::GiftCardActivityList do
 
       it "raises error" do
         expect {
-          AGCOD::GiftCardActivityList.new(request_id, start_time, end_time, page, per_page, show_no_ops)
+          AGCOD::GiftCardActivityList.new(httpable, request_id, start_time, end_time, page, per_page, show_no_ops)
         }.to raise_error(
           AGCOD::GiftCardActivityListError,
           "Only #{AGCOD::GiftCardActivityList::LIMIT} records allowed per request."
@@ -56,7 +57,7 @@ describe AGCOD::GiftCardActivityList do
 
   context "#results" do
     let(:payload) { { "cardActivityList" => [spy] } }
-    let(:request) { AGCOD::GiftCardActivityList.new(request_id, start_time, end_time, page, per_page, show_no_ops) }
+    let(:request) { AGCOD::GiftCardActivityList.new(httpable, request_id, start_time, end_time, page, per_page, show_no_ops) }
 
     before do
       allow(start_time).to receive(:strftime)

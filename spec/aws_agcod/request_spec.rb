@@ -10,6 +10,7 @@ describe AGCOD::Request do
   let(:partner_id) { "BAR" }
   let(:timeout) { 10 }
   let(:config) { double(uri: base_uri, partner_id: partner_id, timeout: timeout) }
+  let(:httpable) { HTTP }
 
   context "#new" do
     before do
@@ -26,21 +27,21 @@ describe AGCOD::Request do
         expect(JSON.parse(body)["partnerId"]).to eq(partner_id)
       end.and_return(signed_headers)
 
-      expect(HTTParty).to receive(:post) do |uri, options|
+      expect(HTTP).to receive(:post) do |uri, options|
         expect(uri).to eq(URI("#{base_uri}/#{action}"))
         expect(JSON.parse(options[:body])["partnerId"]).to eq(partner_id)
         expect(options[:headers]).to eq(signed_headers)
         expect(options[:timeout]).to eq(timeout)
       end.and_return(double(body: params.to_json))
 
-      AGCOD::Request.new(action, params)
+      AGCOD::Request.new(httpable, action, params)
     end
 
     it "sets response" do
       expect(signature).to receive(:sign) { signed_headers }
-      expect(HTTParty).to receive(:post) { (double(body: params.to_json)) }
+      expect(HTTP).to receive(:post) { (double(body: params.to_json)) }
 
-      response = AGCOD::Request.new(action, params).response
+      response = AGCOD::Request.new(httpable, action, params).response
 
       expect(response).to be_a(AGCOD::Response)
     end
