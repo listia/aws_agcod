@@ -6,7 +6,7 @@ module AGCOD
   class CreateGiftCard
     extend Forwardable
 
-    CURRENCIES = %w(USD EUR JPY CNY CAD)
+    CURRENCIES = %w(USD EUR JPY CNY CAD GBP)
 
     def_delegators :@response, :status, :success?, :error_message
 
