@@ -5,8 +5,8 @@ require "yaml"
 
 module AGCOD
   class Request
-    TIME_FORMAT = "%Y%m%dT%H%M%SZ"
-    MOCK_REQUEST_IDS = %w(F0000 F2005)
+    TIME_FORMAT = "%Y%m%dT%H%M%SZ".freeze
+    MOCK_REQUEST_IDS = %w(F0000 F2005).freeze
 
     attr_reader :response
 
@@ -40,22 +40,29 @@ module AGCOD
 
     def body
       @body ||= @params.merge(
-        "partnerId" => AGCOD.config.partner_id
+        "partnerId" => partner_id
       ).to_json
     end
 
     def sanitized_params(params)
-      # Prefix partner_id when it's not given as part of request_id for creationRequestId and it's not a mock request_id
-      if params["creationRequestId"] && !(params["creationRequestId"] =~ /#{AGCOD.config.partner_id}/) && !(MOCK_REQUEST_IDS.member?(params["creationRequestId"]))
-        params["creationRequestId"] = "#{AGCOD.config.partner_id}#{params["creationRequestId"]}"
+      # Prefix partner_id in creationRequestId when it's not given as part of request_id, and it's not a mocked request_id.
+      if params["creationRequestId"] &&
+        !(params["creationRequestId"] =~ /#{partner_id}/) &&
+        !(MOCK_REQUEST_IDS.member?(params["creationRequestId"]))
+
+        params["creationRequestId"] = "#{partner_id}#{params["creationRequestId"]}"
       end
 
       # Remove partner_id when it's prefixed in requestId
-      if params["requestId"] && !!(params["requestId"] =~ /^#{AGCOD.config.partner_id}/)
-        params["requestId"].sub!(/^#{AGCOD.config.partner_id}/, "")
+      if params["requestId"] && !!(params["requestId"] =~ /^#{partner_id}/)
+        params["requestId"].sub!(/^#{partner_id}/, "")
       end
 
       params
+    end
+
+    def partner_id
+      @partner_id ||= AGCOD.config.partner_id
     end
   end
 end
