@@ -6,7 +6,7 @@ require "aws_agcod/gift_card_activity_list"
 
 module AGCOD
   def self.configure(&block)
-    @config = Config.new
+    @config ||= Config.new
 
     yield @config
 

@@ -25,19 +25,43 @@ describe AGCOD::Config do
     end
 
     context "when uri is not set" do
-      context "when production is enabled" do
-        before do
-          config.production = true
+      context "with default region" do
+        context "when production is enabled" do
+          before do
+            config.production = true
+          end
+
+          it "returns the us-east-1 production uri" do
+            expect(config.uri).to eq(AGCOD::Config::URI[:production]["us-east-1"])
+          end
         end
 
-        it "returns the production uri" do
-          expect(config.uri).to eq(AGCOD::Config::URI[:production])
+        context "when production is disabled" do
+          it "returns the us-east-1 sandbox uri" do
+            expect(config.uri).to eq(AGCOD::Config::URI[:sandbox]["us-east-1"])
+          end
         end
       end
 
-      context "when production is disabled" do
-        it "returns the sandbox uri" do
-          expect(config.uri).to eq(AGCOD::Config::URI[:sandbox])
+      context "with specified region" do
+        before do
+          config.region = "eu-west-1"
+        end
+
+        context "when production is enabled" do
+          before do
+            config.production = true
+          end
+
+          it "returns the specified production uri" do
+            expect(config.uri).to eq(AGCOD::Config::URI[:production]["eu-west-1"])
+          end
+        end
+
+        context "when production is disabled" do
+          it "returns the us-east-1 sandbox uri" do
+            expect(config.uri).to eq(AGCOD::Config::URI[:sandbox]["eu-west-1"])
+          end
         end
       end
     end
