@@ -31,13 +31,13 @@ describe AGCOD::Config do
         end
 
         it "returns the production uri" do
-          expect(config.uri).to eq(AGCOD::Config::URI[:production])
+          expect(config.uri).to eq(AGCOD::Config::URI[config.region][:production])
         end
       end
 
       context "when production is disabled" do
         it "returns the sandbox uri" do
-          expect(config.uri).to eq(AGCOD::Config::URI[:sandbox])
+          expect(config.uri).to eq(AGCOD::Config::URI[config.region][:sandbox])
         end
       end
     end

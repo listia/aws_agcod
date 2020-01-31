@@ -9,8 +9,21 @@ module AGCOD
                   :production
 
     URI = {
-      sandbox: "https://agcod-v2-gamma.amazon.com",
-      production: "https://agcod-v2.amazon.com"
+      # US/CA（NA）
+      'us-east-1' => {
+        sandbox: "https://agcod-v2-gamma.amazon.com",
+        production: "https://agcod-v2.amazon.com"
+      },
+      # IT/ES/DE/FR/UK（EU）
+      'eu-west-1' => {
+        sandbox: "https://agcod-v2-eu-gamma.amazon.com/",
+        production: "https://agcod-v2-eu.amazon.com"
+      },
+      # JP（FE）
+      'us-west-2' => {
+        sandbox: "https://agcod-v2-fe-gamma.amazon.com",
+        production: "https://agcod-v2-fe.amazon.com"
+      },
     }
 
     def initialize
@@ -23,7 +36,7 @@ module AGCOD
     def uri
       return @uri if @uri
 
-      production ? URI[:production] : URI[:sandbox]
+      production ? URI[@region][:production] : URI[@region][:sandbox]
     end
   end
 end
