@@ -10,7 +10,7 @@ module AGCOD
 
     attr_reader :response
 
-    def initialize(action, params)
+    def initialize(action, params = {})
       @action = action
       @params = sanitized_params(params)
 

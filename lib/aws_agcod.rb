@@ -2,6 +2,7 @@ require "aws_agcod/version"
 require "aws_agcod/config"
 require "aws_agcod/create_gift_card"
 require "aws_agcod/cancel_gift_card"
+require "aws_agcod/get_available_funds"
 require "aws_agcod/gift_card_activity_list"
 
 module AGCOD
