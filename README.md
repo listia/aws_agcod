@@ -107,6 +107,23 @@ else
   request.error_message # => Error response from AGCOD service
 end
 ```
+
+#### Get available funds
+
+```ruby
+request = AGCOD::GetAvailableFunds.new
+
+# When succeed
+if request.success?
+  request.amount # => The value of funds currently available
+  request.currency_code
+  request.timestamp
+else
+# When failed
+  request.error_message # => Error response from AGCOD service
+end
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/[my-github-username]/aws_agcod/fork )
